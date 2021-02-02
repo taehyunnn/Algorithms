@@ -1,3 +1,5 @@
+package stack_and_queue;
+
 public class Stack_Queue_1 {
     public static int[] solution(int[] prices) {
         int[] answer = new int[prices.length];
