@@ -1,4 +1,4 @@
-package skill_check;
+package skill_check_2;
 
 public class GroundPiking {
     int solution(int[][] land) {
