@@ -16,8 +16,8 @@ public class SecondKey {
         return answer;
     }
 
-    private void makeKeySet(int index, int currentCount, int targetDepth, String[][] relation, Set<Integer> keySet) {
-        if (currentCount == targetDepth) {
+    private void makeKeySet(int index, int currentCount, int target, String[][] relation, Set<Integer> keySet) {
+        if(currentCount == target){
             if (isMinimal(keySet) && isUnique(keySet, relation)) {
                 candidateList.add(keySet);
                 answer++;
@@ -25,10 +25,10 @@ public class SecondKey {
             return;
         }
 
-        for (int i = index+1 ; i < relation[0].length; i++) {
+        for (int i = index+1; i < relation[0].length; i++) {
             Set<Integer> newKeySet = new HashSet<>(keySet);
             newKeySet.add(i);
-            makeKeySet(i, currentCount+1, targetDepth, relation, newKeySet);
+            makeKeySet(i, currentCount+1, target, relation, newKeySet);
         }
     }
 
