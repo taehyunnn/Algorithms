@@ -1,4 +1,4 @@
-package skill_check_2;
+package kakao_2019;
 
 import java.util.ArrayList;
 import java.util.HashMap;
