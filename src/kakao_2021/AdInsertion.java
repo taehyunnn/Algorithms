@@ -7,8 +7,8 @@ public class AdInsertion {
     public String solution(String play_time, String adv_time, String[] logs) {
         String answer = "00:00:00";
 
-        int playTime = getSecondTime(play_time.split(":"));
-        int adTime = getSecondTime(adv_time.split(":"));
+        int playTime = timeToSec(play_time.split(":"));
+        int adTime = timeToSec(adv_time.split(":"));
 
 
         int[][] logTime = new int[logs.length+2][2];
@@ -16,82 +16,16 @@ public class AdInsertion {
         for (int i = 0; i < logs.length; i++) {
             String[] split = logs[i].split("-");
 
-            logTime[i][0] = getSecondTime(split[0].split(":"));
-            logTime[i][1] = getSecondTime(split[1].split(":"));
+            logTime[i][0] = timeToSec(split[0].split(":"));
+            logTime[i][1] = timeToSec(split[1].split(":"));
         }
 
-        Arrays.sort(logTime, (o1, o2) -> o2[1] - o1[1]);
-        int fromEnd = fromEndTime(adTime, logTime);
-
-        Arrays.sort(logTime, Comparator.comparingInt(o -> o[0]));
-        int fromStart = fromStartTime(adTime, logTime);
-
-        int min = Math.min(fromEnd,fromStart);
-
-        return getTimeWithString(min);
+        return secToTime(1);
     }
 
-    private int fromStartTime(int adTime, int[][] logTime) {
-        int answer = -1 ;
-        int maximumTime = 0;
-        for (int i = 0; i < logTime.length; i++) {
-            int startTime = logTime[i][0];
-            int totalTime = 0;
-            int endTime = startTime + adTime;
 
-            for (int j = 0; j < logTime.length; j++) {
-                if (logTime[j][1] < startTime) {
-                    continue;
-                }
 
-                if (logTime[j][0] > endTime) {
-                    break;
-                }
-
-                int min = Math.max(logTime[j][0], startTime);
-                int max = Math.min(logTime[j][1], endTime);
-
-                totalTime += max - min;
-            }
-            if (maximumTime < totalTime) {
-                maximumTime = totalTime;
-                answer = endTime;
-            }
-        }
-        return answer;
-    }
-
-    private int fromEndTime(int adTime, int[][] logTime) {
-        int answer = -1 ;
-        int maximumTime = 0;
-        for (int i = 0; i < logTime.length; i++) {
-            int endTime = logTime[i][1];
-            int totalTime = 0;
-            int startTime = Math.max(endTime - adTime, 0);
-
-            for (int j = 0; j < logTime.length; j++) {
-                if (logTime[j][1] < startTime) {
-                    break;
-                }
-
-                if (logTime[j][0] > endTime) {
-                    continue;
-                }
-
-                int max = Math.min(logTime[j][1], endTime);
-                int min = Math.max(logTime[j][0], startTime);
-
-                totalTime += max - min;
-            }
-            if (maximumTime <= totalTime) {
-                maximumTime = totalTime;
-                answer = startTime;
-            }
-        }
-        return answer;
-    }
-
-    private String getTimeWithString(int startTime) {
+    private String secToTime(int startTime) {
         int hour = startTime / 3600;
         int min = (startTime % 3600) / 60;
         int sec = startTime % 60;
@@ -99,7 +33,7 @@ public class AdInsertion {
         return String.format("%02d:%02d:%02d", hour, min, sec);
     }
 
-    private int getSecondTime(String[] split1) {
+    private int timeToSec(String[] split1) {
         return Integer.parseInt(split1[0]) * 3600 + Integer.parseInt(split1[1]) * 60 + Integer.parseInt(split1[2]);
     }
 
