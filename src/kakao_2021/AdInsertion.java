@@ -1,8 +1,5 @@
 package kakao_2021;
 
-import java.util.Arrays;
-import java.util.Comparator;
-
 public class AdInsertion {
     public String solution(String play_time, String adv_time, String[] logs) {
         String answer = "00:00:00";
@@ -11,24 +8,45 @@ public class AdInsertion {
         int adTime = timeToSec(adv_time.split(":"));
 
 
-        int[][] logTime = new int[logs.length+2][2];
+        int[] times = new int[363660];
 
-        for (int i = 0; i < logs.length; i++) {
-            String[] split = logs[i].split("-");
+        for (String log : logs) {
+            String[] split = log.split("-");
 
-            logTime[i][0] = timeToSec(split[0].split(":"));
-            logTime[i][1] = timeToSec(split[1].split(":"));
+            int startTim = timeToSec(split[0].split(":"));
+            int endTime = timeToSec(split[1].split(":"));
+
+            for (int j = startTim; j < endTime; j++) {
+                times[j]++;
+            }
         }
 
-        return secToTime(1);
+        long currentValue = 0;
+        for (int i = 0; i < adTime; i++) {
+            currentValue += times[i];
+        }
+
+        int resultTime = 0;
+        long maxValue = currentValue;
+
+        int i = 0;
+        while (adTime + i < playTime) {
+            currentValue = currentValue - times[i] + times[adTime+i];
+            if (currentValue > maxValue) {
+                maxValue = currentValue;
+                resultTime = i+1;
+            }
+            i++;
+        }
+        return secToTime(resultTime);
     }
 
 
 
-    private String secToTime(int startTime) {
-        int hour = startTime / 3600;
-        int min = (startTime % 3600) / 60;
-        int sec = startTime % 60;
+    private String secToTime(int time) {
+        int hour = time / 3600;
+        int min = (time / 60) % 60;
+        int sec = time % 60;
 
         return String.format("%02d:%02d:%02d", hour, min, sec);
     }
@@ -38,8 +56,6 @@ public class AdInsertion {
     }
 
     public static void main(String[] args) {
-//        System.out.println(new AdInsertion().getTimeWithString(3902));
-//        System.out.println(new AdInsertion().getSecondTime(new String[]{"01","05","02"}));
 //        System.out.println(new AdInsertion().solution("02:03:55", "00:14:15", new String[]{"01:20:15-01:45:14", "00:25:50-00:48:29", "00:40:31-01:00:00", "01:37:44-02:02:30", "01:30:59-01:53:29"}));
         System.out.println(new AdInsertion().solution("99:59:59", "25:00:00", new String[]{"69:59:59-89:59:59", "01:00:00-21:00:00", "79:59:59-99:59:59", "11:00:00-31:00:00"}));
     }
