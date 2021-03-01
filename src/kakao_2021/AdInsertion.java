@@ -8,7 +8,7 @@ public class AdInsertion {
         int adTime = timeToSec(adv_time.split(":"));
 
 
-        int[] times = new int[363660];
+        int[] times = new int[playTime];
 
         for (String log : logs) {
             String[] split = log.split("-");
