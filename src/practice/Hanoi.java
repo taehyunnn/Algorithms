@@ -4,26 +4,28 @@ import java.util.*;
 
 public class Hanoi {
 
-    boolean[] check = new boolean[3];
-    private final int MAX = 30;
-    List<int[]> list = new ArrayList<>();
-
     public int[][] solution(int n) {
-        int[][] answer = {};
+        List<int[]> list = new ArrayList<>();
 
+        hanoi(n, list, 1, 3, 2);
 
-        int[][] map = new int[n][3];
+        int[][] answer=  new int[list.size()][2];
 
-        dfs(map, 1,-1,-1, new ArrayList<>(), n);
-
+        for (int i = 0; i < answer.length; i++) {
+            answer[i] = list.get(i).clone();
+        }
 
         return answer;
     }
 
-    private void dfs(int[][] map, int topA, int topB, int topC, List<int[]> list, int n) {
-        if (topC + 1 == n) {
-
-            return ;
+    private void hanoi(int n, List<int[]> list, int start, int end, int temp) {
+        if (n == 1) {
+            list.add(new int[]{start, end});
+            return;
         }
+        hanoi(n - 1, list, start, temp, end);
+        hanoi(1, list, start, end, temp);
+        hanoi(n - 1, list, temp, end, start);
     }
+
 }
