@@ -5,7 +5,6 @@ import java.util.*;
 public class LittleFriends {
 
     private String answer = "IMPOSSIBLE";
-    private final int START = -9;
 
     /**
      * @param m     배열의 크기
@@ -45,7 +44,7 @@ public class LittleFriends {
             if (visit[i/2]) {
                 continue;
             }
-            if (isRemovable(map, locations.get(i).row, locations.get(i).col, locations.get(i + 1).row, locations.get(i + 1).col, START, false)) {
+            if (isRemovable(map, locations.get(i).row, locations.get(i).col, locations.get(i + 1).row, locations.get(i + 1).col)) {
                 map[locations.get(i).row][locations.get(i).col] = map[locations.get(i + 1).row][locations.get(i + 1).col] = '.';
                 visit[i/2] = true;
                 if (dfs(map, locations, sb.append(locations.get(i).ch), success + 1, visit)) {
@@ -57,48 +56,50 @@ public class LittleFriends {
         return false;
     }
 
-    private boolean isRemovable(char[][] map, int startRow, int startCol, int endRow, int endCol, int direction, boolean turn) {
+    private boolean isRemovable(char[][] map, int startRow, int startCol, int endRow, int endCol) {
         int[][] moves = new int[][]{{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+        boolean[][] temp = new boolean[map.length][map[0].length];
 
-        for (int i = 0; i < 4; i++) {   // 동 서 남 북
-            boolean turnTemp = turn;
+        for (int[] move : moves) {
+            int nextRow = startRow;
+            int nextCol = startCol;
+            while (true) {
+                nextRow += move[0];
+                nextCol += move[1];
 
-            if (turnTemp) {
-                if (direction != i) {
-                    continue;
+                if (!isPossible(nextRow, nextCol, map.length, map[0].length)) {
+                    break;
                 }
-            }
 
-            // 이미 한 번 턴 했을 때
-            int nextRow = startRow + moves[i][0];
-            int nextCol = startCol + moves[i][1];
-
-            if (nextRow == endRow && nextCol == endCol) {
-                return true;
-            }
-
-            if (!isPossible(nextRow, nextCol, map.length, map[0].length)) {
-                continue;
-            }
-
-            if (map[nextRow][nextCol] != '.') {
-                continue;
-            }
-
-            // 시작도 아니고 방향도 다르면 꺾는거
-            if (direction != START && direction != i) {
-                // 반대방향은 갈 필요 없다.
-                if (direction / 2 == i / 2) {
-                    continue;
+                if (map[nextRow][nextCol] != '.' && !(nextRow == endRow &&  nextCol == endCol)) {
+                    break;
                 }
-                turnTemp = true;
-            }
 
-            if (isRemovable(map, nextRow, nextCol, endRow, endCol, i, turnTemp)) {
-                return true;
+                temp[nextRow][nextCol] = true;
             }
         }
 
+        for (int[] move : moves) {
+            int nextRow = endRow;
+            int nextCol = endCol;
+
+            while (true) {
+                if (temp[nextRow][nextCol]) {
+                    return true;
+                }
+
+                nextRow += move[0];
+                nextCol += move[1];
+
+                if (!isPossible(nextRow, nextCol, map.length, map[0].length)) {
+                    break;
+                }
+
+                if (map[nextRow][nextCol] != '.') {
+                    break;
+                }
+            }
+        }
         return false;
     }
 
