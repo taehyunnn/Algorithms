@@ -42,7 +42,6 @@ public class Firefly {
             } else if (min == temp) {
                 minCount++;
             }
-            // 전체(n/2)에서 높이가 h -  이하의 수를 빼면 장애물의 수
         }
 
         System.out.println(min + " " + minCount);
