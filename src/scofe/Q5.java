@@ -2,7 +2,9 @@ package scofe;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Q5 {
@@ -21,7 +23,10 @@ public class Q5 {
         minCount = n * m;
 
         char[][] board = new char[n][m];
-        Integer[][] visit = new Integer[n][m];
+        int[][] visit = new int[n][m];
+        for (int[] ints : visit) {
+            Arrays.fill(ints, n * m);
+        }
 
         List<int[]> nodes = new ArrayList<>();
 
@@ -47,7 +52,7 @@ public class Q5 {
         }
     }
 
-    private static void dfs(int row, int col, char[][] board, Integer[][] visit) {
+    private static void dfs(int row, int col, char[][] board, int[][] visit) {
         if (row + 1 == board.length) {
             minCount = Math.min(minCount, visit[row][col]);
             return;
@@ -64,12 +69,10 @@ public class Q5 {
                     moveCount++;
                 }
 
-                if (visit[nextRow][nextCol] != null && moveCount >= visit[nextRow][nextCol]) {  // (nextRow, nextCol) 을 가기 위한 좌우 움직임 횟수가 기존보다 크거나 같으면 할 필요 없다.
-                    continue;
+                if (moveCount < visit[nextRow][nextCol]) {  // (nextRow, nextCol) 을 가기 위한 좌우 움직임 횟수가 기존보다 크거나 같으면 할 필요 없다.
+                    visit[nextRow][nextCol] = moveCount;
+                    dfs(nextRow, nextCol, board, visit);
                 }
-
-                visit[nextRow][nextCol] = moveCount;
-                dfs(nextRow, nextCol, board, visit);
             }
         }
     }
