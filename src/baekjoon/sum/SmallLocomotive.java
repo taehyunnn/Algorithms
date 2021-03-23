@@ -11,32 +11,29 @@ public class SmallLocomotive {
         StringTokenizer stringTokenizer = new StringTokenizer(bufferedReader.readLine());
 
         int n = Integer.parseInt(stringTokenizer.nextToken());
-        int[] numOfPeople = new int[n];
+        int[] numOfPeople = new int[n + 1]; // 객차 별 인원 수
+        int[] sumOfPeople = new int[n + 1]; // 1~n 객차까지의 구간 합
+        int[][] dp = new int[4][n + 1]; // dp[i][j] : i대의 기관차로 1~n번의 객차를 끌 때 최대값
+
+        int temp = 0;
 
         stringTokenizer = new StringTokenizer(bufferedReader.readLine());
-        for (int i = 0; i < n; i++) {
+        for (int i = 1; i <= n; i++) {
             numOfPeople[i] = Integer.parseInt(stringTokenizer.nextToken());
+            temp += numOfPeople[i];
+            sumOfPeople[i] = temp;
         }
 
         stringTokenizer = new StringTokenizer(bufferedReader.readLine());
         int locomotive = Integer.parseInt(stringTokenizer.nextToken());
 
-        int[] dp = new int[n];
-
-        int temp = 0;
-        for (int i = 0; i < locomotive * 3; i++) {
-            temp += numOfPeople[i];
-            dp[i] = temp;
-        }
-
-        for (int i = 3 * locomotive; i < n; i++) {
-            temp = 0;
-            for (int j = n - 1; j >= n - locomotive; j--) {
-                temp += numOfPeople[j];
+        // dp 실행
+        for (int i = 1; i <= 3; i++) {
+            for (int j = i * locomotive; j <= n; j++) {
+                dp[i][j] = Math.max(dp[i][j - 1], dp[i - 1][j - locomotive] + sumOfPeople[j] - sumOfPeople[j - locomotive]);
             }
-            dp[i] = Math.max(dp[i - 1], dp[i - locomotive] + temp);
         }
 
-        System.out.println(dp[dp.length - 1]);
+        System.out.println(dp[3][n]);
     }
 }
