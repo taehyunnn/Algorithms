@@ -1,4 +1,4 @@
-package baekjoon.topologicalSort;
+package baekjoon.dijkstra;
 
 import java.io.BufferedReader;
 import java.io.IOException;
