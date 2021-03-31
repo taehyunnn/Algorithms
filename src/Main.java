@@ -1,35 +1,30 @@
-import java.util.*;
 import java.io.*;
 
-//시간줄이기????????????
-
 public class Main {
+
     public static void main(String[] args) throws IOException {
-        BufferedReader br= new BufferedReader(new InputStreamReader(System.in)); //문자스트림
-        int n = Integer.parseInt(br.readLine()); //testcase개수
+        // TODO Auto-generated method stub
+        BufferedReader br = new BufferedReader( new InputStreamReader( System.in ) );
 
-        for(int i=0;i<n;i++) {
-            int t = Integer.parseInt(br.readLine()); //개수 전화번호
-            String  [] arr= new String[t];
-            int sw=0; //yes,no 판별기준 스위치
-            for(int j=0;j<t;j++) {
-                arr[j]=br.readLine();
-            }//배열완성
-            //정렬과 스위치 구현
-            Arrays.sort(arr, new Comparator<String>() {
-                @Override
-                public int compare(String o1, String o2) {
-                    return o1.compareTo(o2);
-                }
-            }); //사전순으로 정렬
+        String first = br.readLine();
+        String second = br.readLine();
+        String third = br.readLine();
 
-            for(int j=1;j<t;j++) {
-                if(arr[j].startsWith(arr[j-1])) {
-                    sw=1;
-                    break;
-                }
-            }
-            System.out.println(sw==0?"YES":"NO");
-        }
+        int lenF = first.length();
+        int lenS = second.length();
+        int lenT = third.length();
+
+        int index = Math.max(lenF, Math.max(lenS, lenT)) + 1;
+        int[][][] dp = new int[index][index][index];
+
+        for(int i = 1 ; i <= lenF ; i++)
+            for(int j = 1 ; j <= lenS ; j++)
+                for(int k = 1 ; k <= lenT ; k++)
+                    if(first.charAt(i-1) == second.charAt(j-1) && second.charAt(j-1) == third.charAt(k-1))
+                        dp[i][j][k] = dp[i-1][j-1][k-1] + 1;
+                    else
+                        dp[i][j][k] = Math.max(dp[i-1][j][k], Math.max(dp[i][j-1][k], dp[i][j][k-1]));
+
+        System.out.println(dp[lenF][lenS][lenT]);
     }
 }

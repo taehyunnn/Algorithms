@@ -42,7 +42,7 @@ public class LCS3 {
                 dp[x][y][z] = lcs(x - 1, y - 1, z - 1) + 1;
             } else {
                 int temp1 = Math.max(lcs(x, y - 1, z - 1), lcs(x - 1, y, z - 1));
-                int temp2 = Math.max(lcs(x - 1, y - 1, z), lcs(x, y, z-1));
+                int temp2 = Math.max(lcs(x - 1, y - 1, z), lcs(x, y, -1));
                 int temp3 = Math.max(lcs(x, y - 1, z), lcs(x - 1, y, z));
 
                 dp[x][y][z] = Math.max(Math.max(temp1, temp2), temp3);
