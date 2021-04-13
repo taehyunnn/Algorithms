@@ -30,7 +30,7 @@ public class RobotControl {
         }
 
         for (int i = 2; i <= n; i++) {
-            dp[i][0] = dp[i - 1][1];  // 이 초기화 값 없이 진행할 때 문제점 : dp[i-1][1] 이 음수면 dp[i-1][1] 과 dp[i][0] max에서 0이 돼버린다
+            dp[i][0] = dp[i - 1][1];  // 이 초기화 값 없이 진행할 때 문제점 : programmers.dp[i-1][1] 이 음수면 programmers.dp[i-1][1] 과 programmers.dp[i][0] max에서 0이 돼버린다
             for (int j = 1; j <= m; j++) {
                 dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]) + board[i][j];
             }
