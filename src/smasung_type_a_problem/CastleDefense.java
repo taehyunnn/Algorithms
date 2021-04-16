@@ -1,9 +1,11 @@
+package smasung_type_a_problem;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 
-public class Main {
+public class CastleDefense {
 
     private static final int[] dRow = new int[]{0, -1, 0};
     private static final int[] dCol = new int[]{-1, 0, 1};
