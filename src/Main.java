@@ -16,6 +16,11 @@ public class Main {
     public static void main(String[] args) throws IOException {
         initMap();
 
+        Arrays.sort(new int[]{2, 1,});
+        Arrays.sort(args);
+        Collections.sort(new ArrayList<Integer>());
+
+
         // combine 을 이용한 궁수 배치
         gameProcess(-1, 0, 3);
         System.out.println(max);
