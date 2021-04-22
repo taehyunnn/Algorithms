@@ -38,8 +38,8 @@ public class 다리만들기2 {
         makeLinksArrayToList();
 
         // links를 토대로 최소 스패닝 트리를 구하면 최소값이다.
-        calcMinimumSpanningTree();
         if (isAllConnected()) {
+            calcMinimumSpanningTree();
             System.out.println(min);
         } else {
             System.out.println(-1);
