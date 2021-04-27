@@ -1,7 +1,9 @@
-import java.util.*;
+package programmers.devmatching2021;
 
-public class Main {
+import java.util.HashMap;
+import java.util.Map;
 
+public class 다단계칫솔판매 {
     private Map<String, String> members;
     private Map<String, Integer> memberNumbers;
 
@@ -36,9 +38,5 @@ public class Main {
         }
 
         return answer;
-    }
-
-    public static void main(String[] args) {
-        new Main().solution(new String[]{"john", "mary", "edward", "sam", "emily", "jaimie", "tod", "young"}, new String[]{"-", "-", "mary", "edward", "mary", "mary", "jaimie", "edward"}, new String[]{"young", "john", "tod", "emily", "mary"}, new int[]{12, 4, 2, 5, 10});
     }
 }
