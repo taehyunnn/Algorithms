@@ -1,6 +1,7 @@
 package programmers.kakao_2018;
 
-import java.util.Arrays;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 public class ShuttleBus {
     /**
@@ -9,57 +10,64 @@ public class ShuttleBus {
      * @param m         한 셔틀에 태울 수 있는 사람의 수
      * @param timetable 셔틀타러 오는 사람들의 시간
      */
+    private Queue<Integer> times;
+
+    // n: 운행 횟수
+    // t: 운행 간격
+    // m: 한 셔틀에 탈 수 있는 최대 크루 수
+    // timetable : 크루가 대기열에 도착하는 시각
     public String solution(int n, int t, int m, String[] timetable) {
-        int answer = 0;
+        init(timetable);
 
-        int[] minTimeTable = timeToMin(timetable);
-        int START_TIME = 540;    // 9:00 에 셔틀 처음으로 시작
-
-        Arrays.sort(minTimeTable);
-
-        int nextPersonIndex = 0;
-        for (int i = 0; i < n - 1; i++) {
-            for (int j = 0; j < m && nextPersonIndex < timetable.length; j++) {
-                if (minTimeTable[nextPersonIndex] <= START_TIME + (t * i)) {
-                    nextPersonIndex++;
-                } else {
+        // n-1 번까지 셔틀을 보낸다.
+        int STARTTIME = 540;
+        for(int i = 0; i<n-1; i++){
+            // 한번에 m명 가능
+            for(int j=0; j<m; j++){
+                if(!times.isEmpty() && times.peek() > STARTTIME + i*t){// 이 시각에 탈 사람이 없다
                     break;
                 }
+                times.poll();
             }
         }
 
-        int lastNumOfPerson = 0;
-
-        for (int i = 0; i < m && nextPersonIndex < timetable.length; i++) {
-            if (minTimeTable[nextPersonIndex] <= START_TIME + (t * (n - 1))) {
-                nextPersonIndex++;
-                lastNumOfPerson++;
+        // n번째 셔틀에 m번째 들어가는 애보다 -1분 빨리 도착한다.
+        int temp=0;
+        for(int i=0; i<m-1; i++){
+            if(!times.isEmpty() && times.peek() > STARTTIME + (n-1)*t){
+                break;
             }
+            times.poll();
         }
 
-
-        if (lastNumOfPerson == m) {
-            answer = minTimeTable[nextPersonIndex-1] -1;
+        if(times.isEmpty()){
+            temp = STARTTIME + (n-1)*t;
         } else {
-            answer = START_TIME + (t * (n - 1));
+            temp = Math.min(STARTTIME + (n-1)*t, times.poll()-1);
         }
 
-        return minToTime(answer);
+        return minToTime(temp);
     }
 
-    private String minToTime(int answer) {
-        return String.format("%02d:%02d", answer / 60, answer % 60);
+    public String minToTime(int min){
+        int hour = min/60;
+        min = min%60;
+        return String.format("%02d:%02d",hour,min);
     }
 
-    private int[] timeToMin(String[] timetable) {
-        int[] mins = new int[timetable.length];
-        for (int i = 0; i < timetable.length; i++) {
-            String s = timetable[i];
-            String[] split = s.split(":");
+    public void init(String[] timetable){
+        times = new PriorityQueue<>();
 
-            mins[i] = Integer.parseInt(split[0]) * 60 + Integer.parseInt(split[1]);
+        for(String s : timetable){
+            times.add(timeToMin(s));
         }
-        return mins;
+    }
+
+    public int timeToMin(String s){
+        String[] split = s.split(":");
+        int hour = Integer.parseInt(split[0]);
+        int min = Integer.parseInt(split[1]);
+        return hour*60 + min;
     }
 
     public static void main(String[] args) {
