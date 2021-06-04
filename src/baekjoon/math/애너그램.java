@@ -34,12 +34,15 @@ public class 애너그램 {
             return;
         }
 
+        // depth 자릿수에 처음 진입 할 때는 0으로 초기화
         duplicationArr[depth] = 0;
 
         for (int i = 0; i < length; i++) {
             if (visit[i]) {
                 continue;
             }
+
+            // depth 자릿수에 새로 올 수 있는 수는 점점 커져야 한다. (중복도 제거)
 
             if (duplicationArr[depth] >= chars[i]) {
                 continue;
