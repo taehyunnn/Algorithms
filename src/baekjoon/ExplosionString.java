@@ -12,7 +12,6 @@ public class ExplosionString {
         String st = bufferedReader.readLine();
         String explosion = bufferedReader.readLine();
 
-        char lastChar = explosion.charAt(explosion.length() - 1);
         char[] chars = new char[st.length()];
 
         int idx = 0;
